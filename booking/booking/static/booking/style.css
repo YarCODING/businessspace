@@ -1,0 +1,345 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #fcfbfa;
+    color: #332924;
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.navbar {
+    background-color: #2b1810;
+    padding: 20px 0;
+    border-bottom: 2px solid #3d251c;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+}
+
+.logo span {
+    color: #d1b48c;
+    font-weight: 300;
+}
+
+.hero {
+    background-image: linear-gradient(rgba(43, 24, 16, 0.85), rgba(43, 24, 16, 0.95));
+    background-color: #2b1810;
+    color: #ffffff;
+    padding: 100px 0;
+    text-align: center;
+    border-bottom: 4px solid #8c6239;
+}
+
+.hero-container {
+    max-width: 800px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #dfd5d0;
+    margin-bottom: 40px;
+    font-weight: 300;
+}
+
+.btn {
+    display: inline-block;
+    padding: 14px 30px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #8c6239;
+    color: #ffffff;
+    border: 1px solid #8c6239;
+}
+
+.btn-primary:hover {
+    background-color: #704e2d;
+    border-color: #704e2d;
+}
+
+.btn-secondary {
+    background-color: #2b1810;
+    color: #ffffff;
+    border: 1px solid #2b1810;
+}
+
+.btn-secondary:hover {
+    background-color: #42281d;
+    border-color: #42281d;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: #d1b48c;
+    border: 1px solid #d1b48c;
+    padding: 10px 20px;
+    font-size: 13px;
+}
+
+.btn-outline:hover {
+    background-color: #d1b48c;
+    color: #2b1810;
+}
+
+.featured-rooms {
+    padding: 80px 0;
+}
+
+.section-title {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 50px;
+    color: #2b1810;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #8c6239;
+    margin: 15px auto 0 auto;
+}
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.room-card {
+    background-color: #ffffff;
+    border: 1px solid #e6e1dd;
+    border-top: 4px solid #8c6239;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(43, 24, 16, 0.05);
+}
+
+.room-info {
+    padding: 30px;
+}
+
+.room-info h3 {
+    font-size: 20px;
+    color: #2b1810;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.room-meta {
+    font-size: 13px;
+    color: #8c6239;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.room-description {
+    font-size: 14px;
+    color: #665750;
+    margin-bottom: 25px;
+    height: 72px;
+    overflow: hidden;
+}
+
+.room-price {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2b1810;
+    border-top: 1px solid #f0eae6;
+    padding-top: 15px;
+}
+
+.center-action {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.footer {
+    background-color: #1f110b;
+    color: #8c7b73;
+    padding: 30px 0;
+    font-size: 13px;
+    text-align: center;
+    border-top: 1px solid #2b1810;
+}
+
+/* Нові стилі для сторінки кімнати (Room Detail) */
+
+.breadcrumbs {
+    padding: 20px 0;
+    font-size: 14px;
+    color: #8c6239;
+}
+
+.breadcrumbs a {
+    color: #8c7b73;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.breadcrumbs a:hover {
+    color: #8c6239;
+}
+
+.breadcrumbs span {
+    margin: 0 10px;
+    color: #e6e1dd;
+}
+
+.detail-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 40px;
+    padding-bottom: 80px;
+}
+
+@media (max-width: 768px) {
+    .detail-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+.room-main-info {
+    background: #ffffff;
+    border: 1px solid #e6e1dd;
+    padding: 40px;
+    border-top: 4px solid #8c6239;
+}
+
+.room-title {
+    color: #2b1810;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.info-block {
+    margin-top: 30px;
+    border-top: 1px solid #f0eae6;
+    padding-top: 20px;
+}
+
+.info-block h4 {
+    color: #2b1810;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.booking-sidebar {
+    background: #ffffff;
+    border: 1px solid #e6e1dd;
+    padding: 30px;
+    position: sticky;
+    top: 20px;
+    border-top: 4px solid #2b1810;
+}
+
+.sidebar-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2b1810;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    color: #665750;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e6e1dd;
+    border-radius: 3px;
+    font-family: inherit;
+    color: #332924;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #8c6239;
+}
+
+.booking-list {
+    list-style: none;
+    padding: 0;
+}
+
+.booking-item {
+    padding: 10px 12px;
+    background: #fcfbfa;
+    border-left: 3px solid #8c6239;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #665750;
+}
+
+.error-list {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 3px;
+    font-size: 14px;
+}

@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бронювання бізнес-просторів</title>
+    <link rel="stylesheet" href="{% static 'booking/style.css' %}">
+</head>
+<body>
+
+    <header class="navbar" style="background: #2b1810; border-bottom: 1px solid #3d251a; padding: 15px 0;">
+        <div class="container navbar-container" style="max-width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center;">
+            
+            <a href="/" class="logo" style="font-size: 24px; font-weight: 700; color: #ffffff; text-decoration: none; letter-spacing: 0.5px;">
+                Business<span style="color: #d1b48c;">Space</span>
+            </a>
+            
+            <div style="display: flex; align-items: center; gap: 20px;">
+                {% if user.is_authenticated %}
+                    
+                    {% if user.is_staff %}
+                        <a href="/admin/" 
+                        style="font-size: 13px; font-weight: 700; color: #d1b48c; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px; border: 1px solid #d1b48c; transition: all 0.2s ease; margin-right: 10px;"
+                        onmouseover="this.style.background='#d1b48c'; this.style.color='#2b1810';"
+                        onmouseout="this.style.background='transparent'; this.style.color='#d1b48c';">
+                            Панель адміна
+                        </a>
+                    {% endif %}
+
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #e6e1dd;">
+                        <span>Вітаємо,</span>
+                        <a href="/my-bookings" style="text-decoration-color: #ffffff"><strong style="color: #ffffff; font-weight: 600;">{{ user.first_name }}</strong></a>
+                    </div>
+                    
+                    <a href="{% url 'logout' %}" 
+                    style="font-size: 13px; font-weight: 700; color: #e6e1dd; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px; border: 1px solid #4a3329; transition: all 0.2s ease;"
+                    onmouseover="this.style.borderColor='#ff6b6b'; this.style.color='#ff6b6b'; this.style.background='rgba(255,107,107,0.1)';"
+                    onmouseout="this.style.borderColor='#4a3329'; this.style.color='#e6e1dd'; this.style.background='transparent';">
+                        Вихід
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" 
+                    style="font-size: 13px; font-weight: 700; color: #ffffff; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s ease;"
+                    onmouseover="this.style.color='#d1b48c';"
+                    onmouseout="this.style.color='#ffffff';">
+                        Увійти
+                    </a>
+                    
+                    <a href="{% url 'register' %}" 
+                    style="font-size: 13px; font-weight: 700; color: #2b1810; background: #d1b48c; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; transition: all 0.2s ease;"
+                    onmouseover="this.style.background='#ffffff'; this.style.color='#2b1810';"
+                    onmouseout="this.style.background='#d1b48c'; this.style.color='#2b1810';">
+                        Реєстрація
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-container">
+            <h1>Простір для ваших найважливіших бізнес-рішень</h1>
+            <p>Преміальні переговорні кімнати, конференц-зали та персональні робочі місця, обладнані за найвищими стандартами корпоративного сегменту.</p>
+            <a href="/rooms" class="btn btn-primary">Перейти до бронювання</a>
+        </div>
+    </section>
+
+    <section class="featured-rooms">
+        <div class="container">
+            <h2 class="section-title">Доступні простори</h2>
+            
+            <div class="rooms-grid">
+                {% for room in rooms %}
+                <div class="room-card">
+                    <div class="room-info">
+                        <h3>{{ room.name }}</h3>
+                        <p class="room-meta">Тип: {{ room.get_room_type_display }} • Місткість: до {{ room.capacity }} осіб</p>
+                        
+                        <p class="room-description">
+                            {% if room.features.all %}
+                                Оснащення: 
+                                {% for feature in room.features.all %}
+                                    {{ feature.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                Готовий до роботи комфортабельний бізнес-простір.
+                            {% endif %}
+                        </p>
+                        
+                        <span class="room-price">від {{ room.price }} € / день</span>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center" style="grid-column: 1/-1; padding: 40px; color: #665750;">
+                    <p>Наразі немає доступних кімнат для відображення.</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="center-action">
+                <a href="/rooms" class="btn btn-secondary">Дивитися всі пропозиції</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 BusinessSpace. Всі права захищено.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

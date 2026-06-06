@@ -1,0 +1,367 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ room.name }} | BusinessSpace</title>
+    <link rel="stylesheet" href="{% static 'booking/style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <style>
+        .flatpickr-calendar {
+            background: #ffffff !important;
+            border: 1px solid #e6e1dd !important;
+            box-shadow: 0 15px 35px rgba(43, 24, 16, 0.1) !important;
+            border-radius: 0px !important;
+            padding: 0 !important;
+        }
+
+        .flatpickr-months {
+            background: #2b1810 !important;
+            padding: 6px 0 !important;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months,
+        input.numInput.cur-year {
+            color: #ffffff !important;
+            font-weight: 700 !important;
+        }
+        .flatpickr-prev-month svg, .flatpickr-next-month svg {
+            fill: #d1b48c !important;
+        }
+        .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg {
+            fill: #ffffff !important;
+        }
+
+        .flatpickr-weekdays {
+            background: #3d251a !important;
+            padding: 4px 0 !important;
+        }
+        span.flatpickr-weekday {
+            color: #d1b48c !important;
+            font-weight: 700 !important;
+        }
+
+        .flatpickr-day {
+            border-radius: 0px !important;
+            border: 1px solid transparent !important;
+            margin: 0 !important;
+            max-width: none !important;
+            height: 38px !important;
+            line-height: 36px !important;
+            color: #2b1810;
+        }
+
+        .flatpickr-day:hover, 
+        .flatpickr-day.prevMonthDay:hover, 
+        .flatpickr-day.nextMonthDay:hover {
+            background: #f4f0ec !important;
+            border-color: #d1b48c !important;
+            color: #2b1810 !important;
+        }
+
+        .flatpickr-day.today {
+            border: 1px solid #2b1810 !important;
+            font-weight: 700;
+        }
+
+        .flatpickr-day.flatpickr-disabled, 
+        .flatpickr-day.flatpickr-disabled:hover,
+        .flatpickr-day.prevMonthDay.flatpickr-disabled,
+        .flatpickr-day.nextMonthDay.flatpickr-disabled {
+            color: #d2c9c4 !important;
+            background: #faf8f6 !important;
+            border-color: transparent !important;
+            cursor: not-allowed !important;
+            opacity: 0.6;
+        }
+        .flatpickr-day.selected, 
+        .flatpickr-day.startRange, 
+        .flatpickr-day.endRange,
+        .flatpickr-day.selected:hover, 
+        .flatpickr-day.startRange:hover, 
+        .flatpickr-day.endRange:hover {
+            background: #8c6239 !important;
+            border-color: #8c6239 !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+        }
+
+        .flatpickr-day.inRange,
+        .flatpickr-day.prevMonthDay.inRange, 
+        .flatpickr-day.nextMonthDay.inRange,
+        .flatpickr-day.today.inRange {
+            background: #f0eae4 !important;
+            border-color: transparent !important;
+            color: #2b1810 !important;
+            box-shadow: none !important;
+        }
+
+        .flatpickr-monthDropdown-months {
+            background: #2b1810 !important;
+            color: #ffffff !important;
+            border: none !important;
+            padding: 2px 6px !important;
+            cursor: pointer !important;
+            font-family: inherit !important;
+            font-size: 18px !important;
+            font-weight: bold !important;
+            outline: none !important;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .flatpickr-monthDropdown-months option {
+            background-color: #3d251a !important;
+            color: #ffffff !important;
+            padding: 8px !important;
+        }
+
+        .flatpickr-monthDropdown-months option:hover,
+        .flatpickr-monthDropdown-months option:focus,
+        .flatpickr-monthDropdown-months option:active,
+        .flatpickr-monthDropdown-months option:checked {
+            background-color: #8c6239 !important;
+            color: #ffffff !important;
+        }
+
+        .numInputWrapper {
+            width: 65px !important;
+        }
+
+        input.numInput.cur-year {
+            background: transparent !important;
+            color: #ffffff !important;
+            font-size: 18px !important;
+            font-weight: bold !important;
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .numInputWrapper span {
+            border: none !important;
+            background: transparent !important;
+        }
+
+        .numInputWrapper span svg {
+            fill: #d1b48c !important;
+        }
+
+        .numInputWrapper span:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar" style="background: #2b1810; border-bottom: 1px solid #3d251a; padding: 15px 0;">
+        <div class="container navbar-container" style="max-width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center;">
+            
+            <a href="/" class="logo" style="font-size: 24px; font-weight: 700; color: #ffffff; text-decoration: none; letter-spacing: 0.5px;">
+                Business<span style="color: #d1b48c;">Space</span>
+            </a>
+            
+            <div style="display: flex; align-items: center; gap: 20px;">
+                {% if user.is_authenticated %}
+
+                    {% if user.is_staff %}
+                        <a href="/admin/" 
+                        style="font-size: 13px; font-weight: 700; color: #d1b48c; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px; border: 1px solid #d1b48c; transition: all 0.2s ease; margin-right: 10px;"
+                        onmouseover="this.style.background='#d1b48c'; this.style.color='#2b1810';"
+                        onmouseout="this.style.background='transparent'; this.style.color='#d1b48c';">
+                            Панель адміна
+                        </a>
+                    {% endif %}
+
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #e6e1dd;">
+                        <span>Вітаємо,</span>
+                        <a href="/my-bookings" style="text-decoration-color: #ffffff"><strong style="color: #ffffff; font-weight: 600;">{{ user.first_name }}</strong></a>
+                    </div>
+                    
+                    <a href="{% url 'logout' %}" 
+                    style="font-size: 13px; font-weight: 700; color: #e6e1dd; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px; border: 1px solid #4a3329; transition: all 0.2s ease;"
+                    onmouseover="this.style.borderColor='#ff6b6b'; this.style.color='#ff6b6b'; this.style.background='rgba(255,107,107,0.1)';"
+                    onmouseout="this.style.borderColor='#4a3329'; this.style.color='#e6e1dd'; this.style.background='transparent';">
+                        Вихід
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" 
+                    style="font-size: 13px; font-weight: 700; color: #ffffff; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s ease;"
+                    onmouseover="this.style.color='#d1b48c';"
+                    onmouseout="this.style.color='#ffffff';">
+                        Увійти
+                    </a>
+                    
+                    <a href="{% url 'register' %}" 
+                    style="font-size: 13px; font-weight: 700; color: #2b1810; background: #d1b48c; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; padding: 12px 24px; transition: all 0.2s ease;"
+                    onmouseover="this.style.background='#ffffff'; this.style.color='#2b1810';"
+                    onmouseout="this.style.background='#d1b48c'; this.style.color='#2b1810';">
+                        Реєстрація
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+    </header>
+
+    <div class="container" style="max-width: 100%; padding: 40px 40px 80px 40px;">
+        
+        <nav class="breadcrumbs" style="margin-bottom: 30px;">
+            <a href="/">Головна</a>
+            <span>•</span>
+            <a href="/">Каталог кімнат</a>
+            <span>•</span>
+            <strong style="color: #2b1810;">{{ room.name }}</strong>
+        </nav>
+
+        <div class="detail-wrapper" style="display: grid; grid-template-columns: 1fr 450px; gap: 50px; align-items: start;">
+            
+            <div class="room-main-heading">
+                <h1 class="room-title" style="font-size: 48px; font-weight: 700; margin-bottom: 15px;">
+                    {{ room.name }}
+                </h1>
+                <div class="room-meta" style="font-size: 14px; letter-spacing: 1px;">
+                    ТИП: {{ room.get_room_type_display }} • МІСТКІСТЬ: ДО {{ room.capacity }} ОСІБ
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    {% if room.is_active %}
+                        <span style="color: #2e7d32; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 18px;">●</span> Доступно для бронювання
+                        </span>
+                    {% else %}
+                        <span style="color: #c62828; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 18px;">●</span> Тимчасово зачинено
+                        </span>
+                    {% endif %}
+                </div>
+
+                <div class="room-description" style="margin-top: 35px; font-size: 16px; color: #554840;">
+                    {{ room.description }}
+                </div>
+            </div>
+
+            <aside class="booking-sidebar" style="margin-top: 0; box-shadow: 0 15px 30px rgba(43,24,16,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid #f0eae6; padding-bottom: 15px;">
+                    <span style="font-size: 14px; color: #8c7b73; font-weight: 600; text-transform: uppercase;">Вартість</span>
+                    <span class="sidebar-price" style="margin-bottom: 0;">{{ room.price }} € <span style="font-size: 14px; font-weight: 400; color: #665750;">/ день</span></span>
+                </div>
+
+                {% if form.non_field_errors %}
+                    <div style="color: #c62828; margin-bottom: 15px; font-size: 14px; font-weight: 600;">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="date_range_picker">ОБЕРІТЬ ПЕРІОД ОРЕНДИ:</label>
+                        <input type="text" id="date_range_picker" class="form-control" style="border-radius: 0; border-color: #d1b48c; background: #fff; cursor: pointer;" placeholder="Натисніть для вибору дат..." readonly required>
+                        
+                        <input type="hidden" id="id_start_time" name="start_time">
+                        <input type="hidden" id="id_end_time" name="end_time">
+                    </div>
+
+                    <div class="form-group">
+                        <ul class="booking-list">
+                            <li class="booking-item">Стандартний час: 09:00 – 18:00</li>
+                            <li class="booking-item">Включає базову технічну підтримку</li>
+                        </ul>
+                    </div>
+
+                    {% if room.is_active %}
+                        <button type="submit" class="btn btn-primary" style="width: 100%; text-align: center; font-weight: 700; padding: 16px; border-radius: 0;">
+                            ЗАБРОНЮВАТИ КІМНАТУ
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-secondary" style="width: 100%; text-align: center; opacity: 0.5; cursor: not-allowed; border-radius: 0;" disabled>
+                            ПРИМІЩЕННЯ НЕДОСТУПНЕ
+                        </button>
+                    {% endif %}
+                </form>
+            </aside>
+        </div>
+
+        <div class="info-block" style="margin-top: 60px; padding-top: 40px; border-top: 2px solid #e6e1dd;">
+            <h4 style="font-size: 16px; color: #2b1810; margin-bottom: 25px; letter-spacing: 1px; font-weight: 700;">ОСНАЩЕННЯ ТА ОСОБЛИВОСТІ КІМНАТИ</h4>
+            
+            <div style="background: #ffffff; border: 1px solid #e6e1dd; border-left: 4px solid #8c6239; padding: 30px; font-size: 16px; color: #4a3e39; line-height: 1.8;">
+                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    {% for feature in room.features.all %}
+                        <span style="background: #fcfbfa; border: 1px solid #e6e1dd; padding: 8px 16px; font-size: 14px; font-weight: 500; color: #2b1810;">
+                            ✓ {{ feature.name }}
+                        </span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="footer" style="margin-top: auto;">
+        <div class="container" style="max-width: 100%; padding: 0 40px;">
+            &copy; 2026 BusinessSpace. Всі права захищені.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/uk.js"></script>
+
+    <script>
+        const bookedRanges = JSON.parse('{{ booked_ranges|safe }}');
+
+        flatpickr("#date_range_picker", {
+            mode: "range",
+            minDate: "today",
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "F j, Y",
+            locale: "uk",
+            disable: bookedRanges,
+            
+            onChange: function(selectedDates, dateStr, instance) {
+                if (selectedDates.length === 2) {
+                    const start = selectedDates[0];
+                    const end = selectedDates[1];
+
+                    let hasOverlap = false;
+
+                    for (let range of bookedRanges) {
+                        const bookedStart = new Date(range.from);
+                        const bookedEnd = new Date(range.to);
+
+                        start.setHours(0,0,0,0);
+                        end.setHours(0,0,0,0);
+                        bookedStart.setHours(0,0,0,0);
+                        bookedEnd.setHours(0,0,0,0);
+
+                        if (start <= bookedEnd && end >= bookedStart) {
+                            hasOverlap = true;
+                            break;
+                        }
+                    }
+
+                    if (hasOverlap) {
+                        alert("Обраний період містить уже заброньовані дні всередині! Будь ласка, оберіть інший діапазон.");
+                        instance.clear();
+                        document.getElementById("id_start_time").value = "";
+                        document.getElementById("id_end_time").value = "";
+                        return;
+                    }
+
+                    document.getElementById("id_start_time").value = instance.formatDate(start, "Y-m-d");
+                    document.getElementById("id_end_time").value = instance.formatDate(end, "Y-m-d");
+                } else {
+                    document.getElementById("id_start_time").value = "";
+                    document.getElementById("id_end_time").value = "";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

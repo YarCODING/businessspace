@@ -1,0 +1,117 @@
+body.auth-body {
+    margin: 0;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #fcfbfa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.auth-card {
+    max-width: 420px;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #e6e1dd;
+    padding: 40px;
+    box-shadow: 0 15px 30px rgba(43, 24, 16, 0.03);
+}
+
+.auth-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2b1810;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.django-form-container p {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.django-form-container label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #665750;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.django-form-container input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 16px;
+    font-size: 15px;
+    color: #2b1810;
+    background-color: #ffffff;
+    border: 1px solid #d1b48c;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.django-form-container input:focus {
+    border-color: #8c6239;
+    box-shadow: 0 0 0 3px rgba(140, 98, 57, 0.1);
+}
+
+.btn-auth-submit {
+    width: 100%;
+    background: #8c6239;
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin-top: 10px;
+}
+
+.btn-auth-submit:hover {
+    background: #2b1810;
+}
+
+.auth-footer-text {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 14px;
+    color: #8c7b73;
+}
+
+.auth-footer-link {
+    font-weight: 700;
+    color: #8c6239;
+    text-decoration: none;
+    margin-left: 4px;
+    transition: color 0.2s ease;
+}
+
+.auth-footer-link:hover {
+    color: #2b1810;
+}
+
+.django-form-container ul.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    color: #c62828;
+    font-weight: 500;
+}
+
+.django-form-container .helptext {
+    font-size: 12px;
+    color: #8c7b73;
+    margin-top: 4px;
+}

@@ -1,0 +1,262 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мої бронювання | BusinessSpace</title>
+    <link rel="stylesheet" href="{% static 'booking/style.css' %}">
+    
+    <style>
+        .bookings-wrapper {
+            padding-bottom: 80px;
+        }
+
+        .bookings-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        @media (min-width: 992px) {
+            .bookings-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .booking-card {
+            background-color: #ffffff;
+            border: 1px solid #e6e1dd;
+            border-top: 4px solid #8c6239; /* Базовый цвет */
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(43, 24, 16, 0.06);
+        }
+
+        /* Динамическое изменение верхней полоски в зависимости от статуса */
+        .booking-card.status-confirmed { border-top-color: #2e7d32; }
+        .booking-card.status-pending { border-top-color: #d1b48c; }
+        .booking-card.status-cancelled { border-top-color: #c62828; }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid #f0eae6;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .booking-id {
+            font-size: 13px;
+            font-weight: 700;
+            color: #8c7b73;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 12px;
+            border-radius: 0px;
+        }
+
+        .status-badge.confirmed { background-color: #e8f5e9; color: #2e7d32; }
+        .status-badge.pending { background-color: #fdf6ec; color: #b78a52; }
+        .status-badge.cancelled { background-color: #ffebee; color: #c62828; }
+
+        .booking-room-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2b1810;
+            margin-bottom: 5px;
+        }
+
+        .booking-room-type {
+            font-size: 13px;
+            color: #8c6239;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            background: #fcfbfa;
+            padding: 15px 20px;
+            border-left: 3px solid #8c6239;
+            margin-bottom: 20px;
+        }
+
+        .booking-details.status-confirmed { border-left-color: #2e7d32; }
+        .booking-details.status-pending { border-left-color: #d1b48c; }
+        .booking-details.status-cancelled { border-left-color: #c62828; }
+
+        .detail-label {
+            font-size: 11px;
+            color: #8c7b73;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #332924;
+        }
+
+        .booking-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #f0eae6;
+        }
+
+        .created-date {
+            font-size: 12px;
+            color: #8c7b73;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            background: #ffffff;
+            border: 1px solid #e6e1dd;
+            border-top: 4px solid #d1b48c;
+        }
+
+        .empty-state h3 {
+            font-size: 24px;
+            color: #2b1810;
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            color: #665750;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar" style="background: #2b1810; border-bottom: 1px solid #3d251a; padding: 15px 0;">
+        <div class="container navbar-container" style="max-width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center;">
+            
+            <a href="/" class="logo" style="font-size: 24px; font-weight: 700; color: #ffffff; text-decoration: none; letter-spacing: 0.5px;">
+                Business<span style="color: #d1b48c;">Space</span>
+            </a>
+            
+            <div style="display: flex; align-items: center; gap: 20px;">
+                {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                        <a href="/admin/" 
+                        style="font-size: 13px; font-weight: 700; color: #d1b48c; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px; border: 1px solid #d1b48c; transition: all 0.2s ease; margin-right: 10px;"
+                        onmouseover="this.style.background='#d1b48c'; this.style.color='#2b1810';"
+                        onmouseout="this.style.background='transparent'; this.style.color='#d1b48c';">
+                            Панель адміна
+                        </a>
+                    {% endif %}
+
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #e6e1dd;">
+                        <span>Вітаємо,</span>
+                        <a href="/my-bookings" style="text-decoration-color: #ffffff"><strong style="color: #ffffff; font-weight: 600;">{{ user.first_name }}</strong></a>
+                    </div>
+                    
+                    <a href="{% url 'logout' %}" 
+                    style="font-size: 13px; font-weight: 700; color: #e6e1dd; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; padding: 10px 20px; border: 1px solid #4a3329; transition: all 0.2s ease;"
+                    onmouseover="this.style.borderColor='#ff6b6b'; this.style.color='#ff6b6b'; this.style.background='rgba(255,107,107,0.1)';"
+                    onmouseout="this.style.borderColor='#4a3329'; this.style.color='#e6e1dd'; this.style.background='transparent';">
+                        Вихід
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="container bookings-wrapper" style="max-width: 100%; padding: 40px 40px 80px 40px;">
+        
+        <nav class="breadcrumbs" style="margin-bottom: 30px; padding: 0;">
+            <a href="/">Головна</a>
+            <span>•</span>
+            <strong style="color: #2b1810;">Мої бронювання</strong>
+        </nav>
+
+        <h1 style="font-size: 36px; font-weight: 700; color: #2b1810; margin-bottom: 10px;">Історія ваших бронювань</h1>
+        <p style="color: #665750; font-size: 15px; margin-bottom: 40px;">Тут відображаються всі ваші поточні, очікувані та минулі замовлення просторів.</p>
+
+        {% if bookings %}
+            <div class="bookings-grid">
+                {% for booking in bookings %}
+                    <div class="booking-card status-{{ booking.status }}">
+                        
+                        <div>
+                            <div class="booking-header">
+                                <span class="booking-id">Бронювання #{{ booking.id }}</span>
+                                <span class="status-badge {{ booking.status }}">
+                                    {{ booking.get_status_display }}
+                                </span>
+                            </div>
+
+                            <h3 class="booking-room-name">{{ booking.room.name }}</h3>
+                            <div class="booking-room-type">{{ booking.room.get_room_type_display }}</div>
+
+                            <div class="booking-details status-{{ booking.status }}">
+                                <div>
+                                    <div class="detail-label">Дата початку</div>
+                                    <div class="detail-value">{{ booking.start_time|date:"d.m.Y" }}</div>
+                                </div>
+                                <div>
+                                    <div class="detail-label">Дата закінчення</div>
+                                    <div class="detail-value">{{ booking.end_time|date:"d.m.Y" }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="booking-footer">
+                            <span class="created-date">Створено: {{ booking.created_at|date:"d.m.Y H:i" }}</span>
+                            <a href="{% url 'room_detail' booking.room.pk %}" class="btn btn-outline" style="padding: 8px 16px; font-size: 12px; font-weight: 700; border-radius: 0;">
+                                Сторінка кімнати
+                            </a>
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h3>У вас ще немає замовлень</h3>
+                <p>Оберіть найкраще місце для вашої наступної зустрічі, презентації або комфортної роботи.</p>
+                <a href="/rooms" class="btn btn-primary" style="border-radius: 0; padding: 14px 35px;">Перейти до каталогу</a>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <footer class="footer" style="margin-top: auto;">
+        <div class="container" style="max-width: 100%; padding: 0 40px;">
+            &copy; 2026 BusinessSpace. Всі права захищені.
+        </div>
+    </footer>
+
+</body>
+</html>
